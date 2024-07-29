@@ -17,6 +17,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { formSchema } from "@/schemas/formSchema";
 import { addProduct } from "@/utils/actions/actions";
+import { redirect } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+import { Loader2 } from "lucide-react";
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<string>();
@@ -30,7 +33,8 @@ export default function AddProduct() {
       price: 0,
     },
   });
-  const { errors } = form.formState;
+  const { isSubmitting, errors } = form.formState;
+  const { toast } = useToast();
 
   async function onSubmit(data: z.output<typeof formSchema>) {
     const formData = new FormData();
@@ -40,6 +44,10 @@ export default function AddProduct() {
     formData.append('image', data.image);
     formData.append('price', data.price);
     const res = await addProduct(formData);
+    toast({
+        description: 'Product successfully added!'
+    })
+    redirect('/');
   }
 
   return (
@@ -122,8 +130,11 @@ export default function AddProduct() {
           {errors.price && (
             <span className="text-red-900">{errors.price.message}</span>
           )}
-          <Button type="submit" className="w-full mt-10">
+          <Button variant={"secondary"} type="submit" className="w-full mt-10" disabled={isSubmitting}>
             Add Product
+            {isSubmitting && <span>
+                <Loader2 className="ml-2 size-4 animate-spin" />
+            </span>}
           </Button>
         </form>
       </Form>
