@@ -42,7 +42,7 @@ export default function AddProduct() {
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('image', data.image);
-    formData.append('price', data.price);
+    formData.append('price', data.price.toString());
     const res = await addProduct(formData);
     toast({
         description: 'Product successfully added!'
