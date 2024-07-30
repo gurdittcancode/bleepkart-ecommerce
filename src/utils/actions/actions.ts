@@ -1,4 +1,4 @@
-"use server";
+'use server';
 
 import { redirect } from "next/navigation";
 import { prisma } from "../db/prisma";
@@ -35,5 +35,5 @@ export async function addProduct(formData: FormData): Promise<FormState> {
     },
   });
 
-  return {message: 'Product added.'}
+  return { message: 'Product added.' };
 }

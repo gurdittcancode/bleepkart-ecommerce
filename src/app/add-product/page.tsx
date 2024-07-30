@@ -17,12 +17,14 @@ import Image from "next/image";
 import { useState } from "react";
 import { formSchema } from "@/schemas/formSchema";
 import { addProduct } from "@/utils/actions/actions";
-import { redirect } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
+import { Toaster } from "@/components/ui/toaster";
+import { useRouter } from "next/navigation";
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<string>();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,17 +45,25 @@ export default function AddProduct() {
     formData.append('description', data.description);
     formData.append('image', data.image);
     formData.append('price', data.price.toString());
-    const res = await addProduct(formData);
-    toast({
-        description: 'Product successfully added!'
-    })
-    redirect('/');
+    try {
+      const res = await addProduct(formData);
+      toast({
+          description: 'Product successfully added!'
+      });
+      router.push('/')
+    } catch (error) {
+      console.log(error)
+      toast({
+        variant: 'destructive',
+        description: 'Failed to add product.'
+      });
+    }
   }
 
   return (
     <>
     <div className="w-full flex flex-col items-center">
-      <h1 className="text-white text-5xl font-extrabold mb-3">Add Product</h1>
+      <h1 className="text-5xl font-extrabold mb-3 text-primary">Add Product</h1>
       <Form {...form}>
         <form className="mt-8 w-1/2" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -122,7 +132,7 @@ export default function AddProduct() {
               <FormItem className="mt-5">
                 <FormLabel className="text-lg font-bold">Product Price</FormLabel>
                 <FormControl>
-                  <Input placeholder="Product price..." type="text" {...field} />
+                  <Input placeholder="Product price (in cents)" type="text" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -130,7 +140,7 @@ export default function AddProduct() {
           {errors.price && (
             <span className="text-red-900">{errors.price.message}</span>
           )}
-          <Button variant={"secondary"} type="submit" className="w-full mt-10" disabled={isSubmitting}>
+          <Button variant={"outline"} type="submit" className="w-full mt-10 bg-foreground text-secondary" disabled={isSubmitting}>
             Add Product
             {isSubmitting && <span>
                 <Loader2 className="ml-2 size-4 animate-spin" />
@@ -138,6 +148,7 @@ export default function AddProduct() {
           </Button>
         </form>
       </Form>
+      <Toaster />
     </div>
     </>
   );
