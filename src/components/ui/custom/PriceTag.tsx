@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import { Badge } from '@/components/ui/badge';
 import { formatPrice } from '@/utils/format';
-import { cn } from '@/lib/utils';
+import { cn } from '@/utils/utils';
 
 interface PriceTagProps {
   price: number,
