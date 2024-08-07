@@ -1,8 +1,9 @@
 'use server';
 
-import { redirect } from "next/navigation";
-import { prisma } from "../db/prisma";
-import { formSchema } from "@/schemas/formSchema";
+import { prisma } from '../db/prisma';
+import { formSchema } from '@/schemas/formSchema';
+import { createCart, getCart } from '../db/cart';
+import { revalidatePath } from 'next/cache';
 
 export type FormState = {
   message: string;
@@ -14,17 +15,17 @@ export async function addProduct(formData: FormData): Promise<FormState> {
 
   if (!parsed.success) {
     return {
-      message: "Invalid form data.",
+      message: 'Invalid form data.',
     };
   }
 
-  const name = formData.get("name")?.toString();
-  const description = formData.get("description")?.toString();
-  const price = Number(formData.get("price") || 0);
-  const imageUrl = formData.get("image")?.toString();
+  const name = formData.get('name')?.toString();
+  const description = formData.get('description')?.toString();
+  const price = Number(formData.get('price') || 0);
+  const imageUrl = formData.get('image')?.toString();
 
   if (!name || !description || !price || !imageUrl) {
-    throw Error("Missing fields.");
+    throw Error('Missing fields.');
   }
   await prisma.product.create({
     data: {
@@ -36,4 +37,28 @@ export async function addProduct(formData: FormData): Promise<FormState> {
   });
 
   return { message: 'Product added.' };
+}
+
+export async function addToCart(productId: string) {
+  const cart = (await getCart()) ?? (await createCart());
+
+  const itemInCart = cart.CartItem.find((item) => item.productId === productId);
+  if (itemInCart) {
+    await prisma.cartItem.update({
+      where: { id: itemInCart.id },
+      data: {
+        quantity: { increment: 1}
+      }
+    });
+  }
+  else {
+    await prisma.cartItem.create({
+      data: {
+        cartId: cart.id,
+        productId: productId,
+        quantity: 1
+      }
+    })
+  }
+  revalidatePath('/products/[id]', 'page');
 }

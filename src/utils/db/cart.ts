@@ -4,10 +4,10 @@ import { ShoppingCart } from '@/types/cart';
 
 export async function createCart():Promise<ShoppingCart>  {
   const newCart = await prisma.cart.create({
-    data: {},
-  });
+    data: {}
+  }) 
   // encrypt this cookie in production
-  cookies().set('localCardId', newCart.id);
+  cookies().set('localCartId', newCart.id);
   return {
     ...newCart,
     CartItem: [],
@@ -17,7 +17,7 @@ export async function createCart():Promise<ShoppingCart>  {
 }
 
 export async function getCart(): Promise<ShoppingCart | null> {
-  const cookieCartId = cookies().get('localCardId')?.value;
+  const cookieCartId = cookies().get('localCartId')?.value;
   const cart = cookieCartId
     ? await prisma.cart.findUnique({
         where: {
