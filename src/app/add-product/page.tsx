@@ -18,7 +18,6 @@ import { formSchema } from "@/schemas/formSchema";
 import { addProduct } from "@/utils/actions/actions";
 import { useToast } from "@/components/ui/use-toast";
 import { Loader2 } from "lucide-react";
-import { Toaster } from "@/components/ui/toaster";
 import { useRouter } from "next/navigation";
 
 export default function AddProduct() {
@@ -39,7 +38,6 @@ export default function AddProduct() {
 
   async function onSubmit(data: z.output<typeof formSchema>) {
     const formData = new FormData();
-    console.log(data);
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('image', data.image);
@@ -147,7 +145,6 @@ export default function AddProduct() {
           </Button>
         </form>
       </Form>
-      <Toaster />
     </div>
     </>
   );
