@@ -18,11 +18,12 @@ import { useState } from 'react';
 import { formSchema } from '@/lib/formSchema';
 import { addProduct } from '@/lib/actions/actions';
 import { useToast } from '@/hooks/use-toast';
-import { redirect } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/router';
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<string>();
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,17 +44,27 @@ export default function AddProduct() {
     formData.append('description', data.description);
     formData.append('image', data.image);
     formData.append('price', data.price.toString());
-    const res = await addProduct(formData);
-    toast({
-      description: 'Product added successfully!',
-    });
-    redirect('/');
+    try {
+      const res = await addProduct(formData);
+      toast({
+        description: 'Product added successfully!',
+      });
+      router.push('/');
+    } catch (error) {
+      console.log(error);
+      toast({
+        variant: 'destructive',
+        description: 'Failed to add product',
+      });
+    }
   }
 
   return (
     <>
       <div className="w-full flex flex-col items-center">
-        <h1 className="text-white text-5xl font-extrabold mb-3">Add Product</h1>
+        <h1 className="text-white text-5xl font-extrabold mb-3 text-primary">
+          Add Product
+        </h1>
         <Form {...form}>
           <form className="mt-8 w-1/2" onSubmit={form.handleSubmit(onSubmit)}>
             <FormField
@@ -133,7 +144,7 @@ export default function AddProduct() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Product price..."
+                      placeholder="Product price (in cents)..."
                       type="text"
                       {...field}
                     />
@@ -146,8 +157,8 @@ export default function AddProduct() {
             )}
             <Button
               type="submit"
-              variant={'secondary'}
-              className="w-full mt-10"
+              variant="outline"
+              className="w-full mt-10 bg-foreground text-secondary"
               disabled={isSubmitting}>
               Add Product
               {isSubmitting && (
