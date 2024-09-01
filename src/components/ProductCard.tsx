@@ -16,7 +16,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
 
   return (
     <Link href={`/products/${product.id}`}>
-      <Card className="w-[300px] md:w-[400px] rounded-xl bg-secondary hover:shadow-xl transition-shadow">
+      <Card className="w-[300px] md:w-[350px] rounded-xl bg-secondary hover:shadow-xl transition-shadow">
         <CardImage
           alt={product.name}
           src={product.imageUrl}
@@ -27,7 +27,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <CardHeader>
           <CardTitle className="text-primary flex">{product.name}</CardTitle>
           {isNew && <Badge className="bg-ring w-fit">New</Badge>}
-          <CardDescription>{product.description}</CardDescription>
+          <CardDescription>{product.description.substring(0, 200) + '...'}</CardDescription>
           <PriceTag price={product.price} />
         </CardHeader>
       </Card>
