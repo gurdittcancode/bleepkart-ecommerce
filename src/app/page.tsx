@@ -1,6 +1,5 @@
 import HeroImage from '@/components/HeroImage';
 import ProductCards from '@/components/ProductCards';
-import ProductCard from '@/components/ui/custom/ProductCard';
 import { prisma } from '@/lib/prisma';
 
 export default async function Home() {

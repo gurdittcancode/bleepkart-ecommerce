@@ -2,7 +2,9 @@ import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 import PriceTag from '@/components/PriceTag';
 import { notFound } from 'next/navigation';
-import { FC } from 'react';
+import { cache, FC } from 'react';
+import { Metadata } from 'next';
+import AddToCartButton from './AddToCartButton';
 
 interface pageProps {
   params: {
@@ -10,15 +12,39 @@ interface pageProps {
   };
 }
 
-const page: FC<pageProps> = async ({ params }) => {
-  const { productId } = params;
+const getProduct = cache(async (id: string) => {
   const product = await prisma.product.findUnique({
-    where: { id: productId },
+    where: { id },
   });
   if (!product) notFound();
+  return product;
+});
+
+export async function generateMetadata({
+  params: { productId },
+}: {
+  params: { productId: string };
+}): Promise<Metadata> {
+  const product = await getProduct(productId);
+  return {
+    title: `${product.name} | BleepKart`,
+    description: product.description,
+    openGraph: {
+      images: [
+        {
+          url: product.imageUrl,
+        },
+      ],
+    },
+  };
+}
+
+const page: FC<pageProps> = async ({ params }) => {
+  const { productId } = params;
+  const product = await getProduct(productId);
 
   return (
-    <div className="flex flex-col lg:flex-row">
+    <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
       <Image
         src={product.imageUrl}
         alt={product.name}
@@ -30,8 +56,9 @@ const page: FC<pageProps> = async ({ params }) => {
 
       <div>
         <h1 className="text-5xl font-extrabold">{product.name}</h1>
-        <PriceTag price={product.price} className="mt-4" />
+        <PriceTag price={product.price} className="my-4" />
         <p>{product.description}</p>
+        <AddToCartButton productId={product.id} className="mt-5" />
       </div>
     </div>
   );
