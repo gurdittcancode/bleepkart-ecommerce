@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
+import Navbar from './Navbar/Navbar';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'bg-background')}>
+        <Navbar />
         <main className="p-4 max-w-7xl m-auto min-w-[300px]">{children}</main>
         <Toaster />
       </body>
