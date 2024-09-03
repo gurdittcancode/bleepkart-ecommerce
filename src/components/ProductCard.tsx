@@ -1,7 +1,13 @@
 import { Product } from '@prisma/client';
 import Link from 'next/link';
 import { FC } from 'react';
-import { Card, CardDescription, CardHeader, CardImage, CardTitle } from './ui/card';
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardImage,
+  CardTitle,
+} from './ui/card';
 import { Badge } from './ui/badge';
 import PriceTag from './PriceTag';
 
@@ -27,7 +33,9 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
         <CardHeader>
           <CardTitle className="text-primary flex">{product.name}</CardTitle>
           {isNew && <Badge className="bg-ring w-fit">New</Badge>}
-          <CardDescription>{product.description.substring(0, 200) + '...'}</CardDescription>
+          <CardDescription>
+            {product.description.substring(0, 200) + '...'}
+          </CardDescription>
           <PriceTag price={product.price} />
         </CardHeader>
       </Card>
