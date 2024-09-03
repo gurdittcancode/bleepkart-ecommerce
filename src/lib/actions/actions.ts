@@ -61,3 +61,25 @@ export async function addToCart(productId: string) {
   }
   revalidatePath('/products/[id]', 'page');
 }
+
+export async function setProductQuantity(productId: string, quantity: number) {
+  const cart = (await getCart()) ?? (await createCart());
+  const itemInCart = cart.CartItem.find((item) => item.productId === productId);
+  if (itemInCart) {
+    if (quantity === 0) {
+      await prisma.cartItem.delete({
+        where: {
+          id: itemInCart.id,
+        },
+      });
+    } else {
+      await prisma.cartItem.update({
+        where: {
+          id: itemInCart.id,
+        },
+        data: { quantity },
+      });
+    }
+  }
+  revalidatePath('/cart', 'page');
+}
