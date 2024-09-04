@@ -17,7 +17,7 @@ async function searchProducts(formData: FormData) {
 const Navbar: FC = async () => {
   const cart = await getCart();
   return (
-    <div className="bg-base-100 pt-3 mb-7">
+    <nav className="bg-base-100 pt-3 mb-7 mt-3">
       <div className="max-w-7xl m-auto flex items-center flex-col sm:flex-row">
         <div className="flex-1">
           <Link href={'/'} className="font-extrabold text-3xl  text-white">
@@ -28,24 +28,22 @@ const Navbar: FC = async () => {
           <form action={searchProducts} className="text-white">
             <div>
               <Input
+                type="search"
                 name="searchQuery"
-                className="p-2 rounded-sm text-black"
+                className="p-2 text-white rounded-lg"
                 placeholder="Search for products here..."
               />
             </div>
           </form>
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <CartButton cart={cart} />
-            <Button variant="secondary">
-              <Link href={'/'}>Log In</Link>
-            </Button>
-            <Button>
-              <Link href={'/'}>Sign Up</Link>
+            <Button variant="default">
+              <Link href={'/'} className='text-md'>Sign In</Link>
             </Button>
           </div>
         </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

@@ -19,7 +19,7 @@ import { formSchema } from '@/lib/formSchema';
 import { addProduct } from '@/lib/actions/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<string>();
@@ -63,7 +63,7 @@ export default function AddProduct() {
     <>
       <div className="w-full flex flex-col items-center">
         <h1 className="text-white text-5xl font-extrabold mb-3 text-primary">
-          Add Product
+          ADD PRODUCT
         </h1>
         <Form {...form}>
           <form className="mt-8 w-1/2" onSubmit={form.handleSubmit(onSubmit)}>
@@ -72,7 +72,7 @@ export default function AddProduct() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-lg font-bold">Name</FormLabel>
+                  <FormLabel className="text-lg font-semibold">Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Name of product" {...field} />
                   </FormControl>
@@ -87,7 +87,7 @@ export default function AddProduct() {
               name="description"
               render={({ field }) => (
                 <FormItem className="mt-5">
-                  <FormLabel className="text-lg font-bold">
+                  <FormLabel className="text-lg font-semibold">
                     Description
                   </FormLabel>
                   <FormControl>
@@ -106,7 +106,7 @@ export default function AddProduct() {
               name="image"
               render={({ field }) => (
                 <FormItem className="mt-5">
-                  <FormLabel className="text-lg font-bold">
+                  <FormLabel className="text-lg font-semibold">
                     Product image
                   </FormLabel>
                   <FormControl>
@@ -139,7 +139,7 @@ export default function AddProduct() {
               name="price"
               render={({ field }) => (
                 <FormItem className="mt-5">
-                  <FormLabel className="text-lg font-bold">
+                  <FormLabel className="text-lg font-semibold">
                     Product Price
                   </FormLabel>
                   <FormControl>

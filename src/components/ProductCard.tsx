@@ -31,10 +31,14 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           className="object-cover rounded-xl"
         />
         <CardHeader>
-          <CardTitle className="text-primary flex">{product.name}</CardTitle>
-          {isNew && <Badge className="bg-ring w-fit">New</Badge>}
+          <CardTitle className="text-primary flex items-center gap-3">
+            {product.name}
+            {isNew && <Badge className="bg-ring w-fit">New</Badge>}
+          </CardTitle>
           <CardDescription>
-            {product.description.substring(0, 200) + '...'}
+            {product.description.length > 200
+              ? product.description.substring(0, 200) + '...'
+              : product.description}
           </CardDescription>
           <PriceTag price={product.price} />
         </CardHeader>

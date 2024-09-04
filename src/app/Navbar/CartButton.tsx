@@ -22,7 +22,7 @@ const CartButton: FC<CartButtonProps> = ({ cart }) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="hover:cursor-pointer relative mr-1">
-          <ShoppingBag size={28} />
+          <ShoppingBag size={32} />
           <Badge className="absolute -right-3 -top-1">
             {cart?.size ? cart.size : 0}
           </Badge>
