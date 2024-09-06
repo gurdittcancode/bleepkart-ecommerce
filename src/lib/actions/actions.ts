@@ -51,18 +51,27 @@ export async function addToCart(productId: string) {
   const cart = (await getCart()) ?? (await createCart());
   const itemInCart = cart.CartItem.find((item) => item.productId === productId);
   if (itemInCart) {
-    await prisma.cartItem.update({
-      where: { id: itemInCart.id },
+    await prisma.cart.update({
+      where: { id: cart.id },
       data: {
-        quantity: { increment: 1 },
+        CartItem: {
+          update: {
+            where: { id: itemInCart.id },
+            data: { quantity: { increment: 1 } },
+          },
+        },
       },
     });
   } else {
-    await prisma.cartItem.create({
+    await prisma.cart.update({
+      where: { id: cart.id },
       data: {
-        cartId: cart.id,
-        productId,
-        quantity: 1,
+        CartItem: {
+          create: {
+            productId,
+            quantity: 1,
+          },
+        },
       },
     });
   }
@@ -74,17 +83,25 @@ export async function setProductQuantity(productId: string, quantity: number) {
   const itemInCart = cart.CartItem.find((item) => item.productId === productId);
   if (itemInCart) {
     if (quantity === 0) {
-      await prisma.cartItem.delete({
-        where: {
-          id: itemInCart.id,
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: {
+          CartItem: {
+            delete: { id: itemInCart.id },
+          },
         },
       });
     } else {
-      await prisma.cartItem.update({
-        where: {
-          id: itemInCart.id,
+      await prisma.cart.update({
+        where: { id: cart.id },
+        data: {
+          CartItem: {
+            update: {
+              where: { id: itemInCart.id },
+              data: { quantity },
+            },
+          },
         },
-        data: { quantity },
       });
     }
   }
