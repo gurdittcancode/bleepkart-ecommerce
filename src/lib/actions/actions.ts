@@ -5,12 +5,18 @@ import { prisma } from '../prisma';
 import { formSchema } from '../formSchema';
 import { createCart, getCart } from '../db/cart';
 import { revalidatePath } from 'next/cache';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 
 export type FormState = {
   message: string;
 };
 
 export async function addProduct(formData: FormData): Promise<FormState> {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    redirect('/api/auth/signin?callbackUrl=/add-product');
+  }
   const data = Object.fromEntries(formData);
   const parsed = formSchema.safeParse(data);
 
