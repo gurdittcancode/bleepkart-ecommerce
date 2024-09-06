@@ -19,11 +19,15 @@ import { formSchema } from '@/lib/formSchema';
 import { addProduct } from '@/lib/actions/actions';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 export default function AddProduct() {
   const [selectedImage, setSelectedImage] = useState<string>();
   const router = useRouter();
+  const { data: session, status } = useSession();
+  if (status === 'unauthenticated')
+    redirect('/api/auth/signin?callbackUrl=/add-product');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +53,7 @@ export default function AddProduct() {
       toast({
         description: 'Product added successfully!',
       });
-      router.push('/');
+      redirect('/');
     } catch (error) {
       console.log(error);
       toast({

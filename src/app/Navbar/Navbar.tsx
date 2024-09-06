@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { FC } from 'react';
 import CartButton from './CartButton';
+import UserMenuButton from './UserMenuButton';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 
 async function searchProducts(formData: FormData) {
   'use server';
@@ -16,6 +19,8 @@ async function searchProducts(formData: FormData) {
 
 const Navbar: FC = async () => {
   const cart = await getCart();
+  const session = await getServerSession(authOptions);
+
   return (
     <nav className="bg-base-100 pt-3 mb-7 mt-3">
       <div className="max-w-7xl m-auto flex items-center flex-col sm:flex-row">
@@ -37,9 +42,7 @@ const Navbar: FC = async () => {
           </form>
           <div className="flex gap-3 items-center">
             <CartButton cart={cart} />
-            <Button variant="default">
-              <Link href={'/'} className='text-md'>Sign In</Link>
-            </Button>
+            <UserMenuButton session={session} />
           </div>
         </div>
       </div>
