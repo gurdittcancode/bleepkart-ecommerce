@@ -2,7 +2,7 @@ import { prisma } from '../prisma';
 import { cookies } from 'next/headers';
 import { CartWithProducts, ShoppingCart } from '@/types/cart';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions} from '@/lib/auth';
 import { Cart, CartItem } from '@prisma/client';
 
 export async function createCart(): Promise<ShoppingCart> {

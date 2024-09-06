@@ -6,7 +6,7 @@ import { formSchema } from '../formSchema';
 import { createCart, getCart } from '../db/cart';
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions} from '@/lib/auth';
 
 export type FormState = {
   message: string;
