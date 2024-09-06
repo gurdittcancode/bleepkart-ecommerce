@@ -24,7 +24,7 @@ export default function RootLayout({
       <html lang="en">
         <body className={cn(inter.className, 'bg-background')}>
           <Navbar />
-          <main className="p-4 max-w-7xl m-auto min-w-[300px]">{children}</main>
+          <main className="flex flex-col items-center p-4 max-w-7xl m-auto min-w-[300px]">{children}</main>
           <Toaster />
           <Footer />
         </body>

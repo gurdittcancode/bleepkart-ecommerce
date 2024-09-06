@@ -1,12 +1,30 @@
 import HeroImage from '@/components/HeroImage';
+import PaginationBar from '@/components/PaginationBar';
 import ProductCards from '@/components/ProductCards';
 import { prisma } from '@/lib/prisma';
 
-export default async function Home() {
+interface HomeProps {
+  searchParams: {
+    page: string;
+  };
+}
+
+export default async function Home({
+  searchParams: { page = '1' },
+}: HomeProps) {
+  const currentPage = parseInt(page);
+  const pageSize = 6;
+  const heroItemCount = 1;
+
+  const totalItems = await prisma.product.count();
+  const totalPages = Math.ceil(totalItems / pageSize);
+
   const products = await prisma.product.findMany({
     orderBy: {
       createdAt: 'desc',
     },
+    skip: (currentPage - 1) * pageSize,
+    take: pageSize,
   });
 
   return (
@@ -28,6 +46,9 @@ export default async function Home() {
         <HeroImage />
       </div>
       <ProductCards products={products} />
+      {totalPages > 1 && (
+      <PaginationBar currentPage={currentPage} totalPages={totalPages} />
+      )}
     </div>
   );
 }
