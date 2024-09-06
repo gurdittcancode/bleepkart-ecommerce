@@ -28,7 +28,7 @@ const ProductCard: FC<ProductCardProps> = ({ product }) => {
           src={product.imageUrl}
           width={800}
           height={400}
-          className="object-cover rounded-xl"
+          className="object-cover rounded-xl w-full h-[300px] "
         />
         <CardHeader>
           <CardTitle className="text-primary flex items-center gap-3">

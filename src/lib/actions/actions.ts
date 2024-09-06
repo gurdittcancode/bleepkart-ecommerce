@@ -34,6 +34,7 @@ export async function addProduct(formData: FormData): Promise<FormState> {
   if (!name || !description || !price || !imageUrl) {
     throw Error('Missing fields.');
   }
+
   await prisma.product.create({
     data: {
       name,

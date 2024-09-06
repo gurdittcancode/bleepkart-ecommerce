@@ -53,7 +53,7 @@ export default function AddProduct() {
       toast({
         description: 'Product added successfully!',
       });
-      redirect('/');
+      router.push('/');
     } catch (error) {
       console.log(error);
       toast({
@@ -126,15 +126,6 @@ export default function AddProduct() {
                 </FormItem>
               )}
             />
-            {selectedImage && (
-              <Image
-                src={selectedImage}
-                className="mt-3 mx-auto"
-                width={300}
-                height={300}
-                alt="Selected product image"
-              />
-            )}
             {errors.image && (
               <span className="text-red-900">*Please add a product image.</span>
             )}
@@ -144,7 +135,7 @@ export default function AddProduct() {
               render={({ field }) => (
                 <FormItem className="mt-5">
                   <FormLabel className="text-lg font-semibold">
-                    Product Price
+                    Product Price (in cents)
                   </FormLabel>
                   <FormControl>
                     <Input
