@@ -43,7 +43,6 @@ export default function AddProduct() {
 
   async function onSubmit(data: z.output<typeof formSchema>) {
     const formData = new FormData();
-    console.log(data);
     formData.append('name', data.name);
     formData.append('description', data.description);
     formData.append('image', data.image);

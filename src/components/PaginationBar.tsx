@@ -32,7 +32,7 @@ const PaginationBar: FC<PaginationBarProps> = ({ currentPage, totalPages }) => {
 
   return (
     <Fragment>
-      <Pagination className="hidden sm:block">
+      <Pagination className="hidden sm:flex mt-12">
         <PaginationContent>{pageNumbers}</PaginationContent>
       </Pagination>
       <Pagination className="block sm:hidden">

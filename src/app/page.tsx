@@ -47,7 +47,7 @@ export default async function Home({
       </div>
       <ProductCards products={products} />
       {totalPages > 1 && (
-      <PaginationBar currentPage={currentPage} totalPages={totalPages} />
+        <PaginationBar currentPage={currentPage} totalPages={totalPages} />
       )}
     </div>
   );

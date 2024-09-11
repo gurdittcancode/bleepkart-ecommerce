@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getCart } from '@/lib/db/cart';
 import Link from 'next/link';
@@ -25,7 +24,9 @@ const Navbar: FC = async () => {
     <nav className="bg-base-100 pt-3 mb-7 mt-3">
       <div className="max-w-7xl m-auto flex items-center flex-col sm:flex-row">
         <div className="flex-1">
-          <Link href={'/'} className="font-extrabold text-3xl  text-white">
+          <Link
+            href={'/'}
+            className="font-extrabold italic text-3xl  text-white">
             BleepKart
           </Link>
         </div>

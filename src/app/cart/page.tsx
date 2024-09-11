@@ -1,26 +1,28 @@
-import { getCart } from "@/lib/db/cart";
-import { Metadata } from "next";
-import { FC } from "react";
-import CartItem from "@/components/CartItem";
-import { formatPrice } from "@/lib/format";
-import { Button } from "@/components/ui/button";
-import { Landmark } from "lucide-react";
+import { getCart } from '@/lib/db/cart';
+import { Metadata } from 'next';
+import { FC } from 'react';
+import CartItem from '@/components/CartItem';
+import { formatPrice } from '@/lib/format';
+import { Button } from '@/components/ui/button';
+import { Landmark } from 'lucide-react';
 
 interface PageProps {}
 
 export const metadata: Metadata = {
-  title: "Your Cart | BleepKart",
+  title: 'Your Cart | BleepKart',
 };
 
 const page: FC<PageProps> = async ({}) => {
   const cart = await getCart();
 
   return (
-    <div>
-      <h1 className="text-3xl font-extrabold mb-6">Your Cart</h1>
-      {cart?.CartItem.map((item) => (
-        <CartItem key={item.productId} cartItem={item} />
-      ))}
+    <div className="w-full">
+      <h1 className="text-3xl font-extrabold mb-6">YOUR CART</h1>
+      <div>
+        {cart?.CartItem.map((item) => (
+          <CartItem key={item.productId} cartItem={item} />
+        ))}
+      </div>
       {!cart?.CartItem.length && <p>Your cart is empty</p>}
       <div>
         <p className="mb-3 font-bold">
